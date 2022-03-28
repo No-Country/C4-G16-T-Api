@@ -1,13 +1,11 @@
+require('dotenv').config()
+require('./mongo')
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const port = process.env.PORT || 8001
 
 const app = express()
-
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
 
 // Here connect to DB
 app.use(cors())
