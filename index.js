@@ -4,12 +4,9 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-const path = require('path');
 const port = process.env.PORT || 8001
-const User = require('./model/User')
-
-
-
+const User = require('./models/User')
+const router = express.Router()
 
 const app = express()
 
@@ -18,66 +15,68 @@ app.use(cors())
 app.use(morgan())
 app.use(express.json())
 
-// app.use('/', (req, res) => {
-//   res.status(200).send('server ready')
-// })
-
-// configurar los routers
-
+app.get('/', (req, res) => {
+  res.status(200).send('server ready')
+})
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-const router = express.Router()
+app.get('/users', async (req, res) => {
+  const users = await User.find({})
+  res.json(users)
+})
 
+app.get('/users/:id', (req, res, next) => {
+  const { id } = req.params
 
+  User.findById(id)
+    .then(user => {
+      if (user) {
+        res.send(user)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(err => next(err))
+})
 
 // Creo un usuario
-router.post('/register', async (req, res) => {
-  const {  username, password} = req.body;
-  const user = new User({  username, password});
+app.post('/user/register', async (req, res) => {
+  const { email, password } = req.body
+  const newUser = new User({ email, password })
 
-  user.save(err=>{
-    if(err){
-      res.status(500).send('ERROR AL REGISTRAR')
-    }else{
-      res.status(200).send('USUARIO REGISTRADO')
+  try {
+    const savedUser = await newUser.save()
+    res.status(201).json(savedUser)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// autentico el usuario
+router.post('/authenticate', async (req, res) => {
+  const { email, password } = req.body
+
+  User.findOne({ email }, (err, user) => {
+    if (err) {
+      res.status(500).send('ERROR AL AUTENTICAR')
+    } else if (!user) {
+      res.status(500).send('EL USUARIO NO EXISTE')
+    } else {
+      user.isCorrectPassword(password, (err, result) => {
+        if (err) {
+          res.status(500).send('ERROR AL AUTENTICAR')
+        } else if (result) {
+          res.status(200).send('USUARIO AUTENTICADO CORRECTAMENTE')
+        } else {
+          res.status(500).send('USUARIO Y/0 CONTRASEÑA INCORRECTA')
+        }
+      })
     }
   })
-  
-
 })
-
-//autentico el usuario
-router.post('/authenticate', async (req, res)=>{
-  const {username, password} = req.body;
-
-  User.findOne({username}, (err, user)=>{
-    if(err){
-      res.status(500).send('ERROR AL AUTENTICAR')
-    }else if(!user){
-      res.status(500).send('EL USUARIO NO EXISTE')
-    }else{
-        user.isCorretPassword(password, (err, result)=>{
-          if(err){
-            res.status(500).send('ERROR AL AUTENTICAR')
-          }else if(result){
-            res.status(200).send('USUARIO AUTENTICADO CORRECTAMENTE')
-          }else{
-            res.status(500).send('USUARIO Y/0 CONTRASEÑA INCORRECTA')
-          }
-          })
-        }
-    
-  })
-
-
-})
-
-
-
-
 
 app.listen(port, () => {
-  console.warn(`El servidor esta escuchando en ${port}`)
+  console.warn(`The server is listening on port ${port}`)
 })

@@ -7,7 +7,7 @@ const connectionString = MONGO_DB_URI
 // Conexión a MongoDB
 mongoose.connect(connectionString)
   .then(() => {
-    console.log('database connected')
+    console.log('Database connected')
   })
   .catch((err) => {
     console.error(err)
