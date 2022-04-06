@@ -77,8 +77,6 @@ router.post('/authenticate', async (req, res) => {
   })
 })
 
-
-
 app.listen(port, () => {
   console.warn(`The server is listening on port ${port}`)
 })
