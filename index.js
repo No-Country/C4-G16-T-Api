@@ -69,13 +69,12 @@ app.post('/login', async (req, res) => {
     : await bcrypt.compare(password, user.passwordHash)
 
   if (!(user && passwordCorrect)) {
-    res.status(401).json({
+    return res.status(401).json({
       error: 'invalid user or password'
     })
   }
 
   const userForToken = {
-    id: user._id,
     email: user.email
   }
 
@@ -88,7 +87,6 @@ app.post('/login', async (req, res) => {
   )
 
   res.send({
-    email: user.email,
     token
   })
 })
