@@ -43,13 +43,20 @@ app.get('/users/:id', (req, res, next) => {
 
 // Creo un usuario
 app.post('/register', async (req, res) => {
-  const { email, password } = req.body
+  const { name, lastName, email, password } = req.body
 
   const saltRounds = 10
 
   try {
+    const user = await User.findOne({ email })
+    if ((user)) {
+      return res.status(401).json({
+        error: 'user already exists'
+      })
+    }
+
     const passwordHash = await bcrypt.hash(password, saltRounds)
-    const newUser = new User({ email, passwordHash })
+    const newUser = new User({ name, lastName, email, passwordHash })
 
     const savedUser = await newUser.save()
     res.status(201).json(savedUser)
