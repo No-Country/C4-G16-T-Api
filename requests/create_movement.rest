@@ -2,6 +2,7 @@ POST http://localhost:4001/movements
 Content-Type: application/json
 
 {
-    "amount": 2000,
-    "description": "movimiento"
+    "amount": 123123,
+    "description": "movimien",
+    "userId": "6255e154dee65b55127262d8"
 }
