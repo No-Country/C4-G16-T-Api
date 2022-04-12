@@ -42,23 +42,38 @@ app.get('/users/:id', (req, res, next) => {
     .catch(err => next(err))
 })
 
+app.get('/movements', async (req, res) => {
+  const movements = await Movement.find({}).populate('user', {
+    email: 1,
+    name: 1,
+    lastName: 1
+  })
+  res.json(movements)
+})
 app.post('/movements', async (req, res) => {
-  const { amount, description } = req.body
-  const { userId } = req
+  const { amount, description, userId } = req.body
+
+  console.log(userId)
 
   const user = await User.findById(userId)
+
+  console.log(user)
 
   const newMovement = new Movement({
     amount,
     description,
-    date: new Date()
+    date: new Date(),
+    user: user._id
   })
+  try {
+    const savedMovement = await newMovement.save()
+    user.movements = user.movements.concat(savedMovement._id)
+    await user.save()
 
-  const savedMovement = await newMovement.save()
-  user.movements = user.movements.concat(savedMovement.id)
-  await user.save()
-
-  res.json(savedMovement)
+    res.json(savedMovement)
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 // Creo un usuario
