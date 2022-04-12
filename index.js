@@ -8,6 +8,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 8001
 const User = require('./models/User')
+const Movement = require('./models/Movement')
 
 const app = express()
 
@@ -39,6 +40,25 @@ app.get('/users/:id', (req, res, next) => {
       }
     })
     .catch(err => next(err))
+})
+
+app.post('/movements', async (req, res) => {
+  const { amount, description } = req.body
+  const { userId } = req
+
+  const user = await User.findById(userId)
+
+  const newMovement = new Movement({
+    amount,
+    description,
+    date: new Date()
+  })
+
+  const savedMovement = await newMovement.save()
+  user.movements = user.movements.concat(savedMovement.id)
+  await user.save()
+
+  res.json(savedMovement)
 })
 
 // Creo un usuario
