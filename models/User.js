@@ -7,7 +7,11 @@ const userSchema = new Schema({
   email: { type: String, required: false },
   passwordHash: { type: String, required: false },
   date: { type: Date, default: Date.now },
-  balance: { type: Number, default: 50000 }
+  balance: { type: Number, default: 50000 },
+  movements: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Movement'
+  }]
 })
 
 userSchema.set('toJSON', {
