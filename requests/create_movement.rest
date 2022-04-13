@@ -3,5 +3,6 @@ Content-Type: application/json
 
 {
     "amount": 2000,
-    "description": "movimiento"
+    "description": "movimiento",
+    "userId": "625629ae29248b3f68fce79f"
 }

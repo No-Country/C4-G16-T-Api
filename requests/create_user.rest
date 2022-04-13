@@ -2,8 +2,8 @@ POST http://localhost:4001/register
 Content-Type: application/json
 
 {
-    "name": "Lucas",
-    "lastName": "Montoby",
-    "email": "montobybianchi@gmail.com",
-	"password": "454545"
+    "name": "Juan Manuel",
+    "lastName": "González",
+    "email": "juan.m-gonzalez@outlook.com",
+	"password": "123424"
 }
