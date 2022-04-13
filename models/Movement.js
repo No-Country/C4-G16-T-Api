@@ -14,6 +14,7 @@ const movementSchema = new Schema({
 movementSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id
+    returnedObject.date = returnedObject.date.toLocaleString('es-AR')
     delete returnedObject._id
     delete returnedObject.__v
   }

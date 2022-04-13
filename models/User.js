@@ -1,12 +1,14 @@
 const { model, Schema } = require('mongoose')
 
+const saldo = parseInt(Math.random() * 100000)
+
 const userSchema = new Schema({
   name: String,
   lastName: String,
   email: String,
   passwordHash: String,
   date: { type: Date, default: Date.now },
-  balance: { type: Number, default: 50000 },
+  balance: { type: Number, default: saldo },
   movements: [{
     type: Schema.Types.ObjectId,
     ref: 'Movement'
