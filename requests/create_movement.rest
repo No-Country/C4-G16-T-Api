@@ -1,5 +1,6 @@
 POST http://localhost:4001/movements
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVzdGVmYW55QGhvdG1haWwuY29tIiwiaWQiOiI2MjVkYjJhY2QwMTgwODU4YzU0MWM5NWUiLCJpYXQiOjE2NTAzMTA3NjIsImV4cCI6MTY1MDkxNTU2Mn0.rlNl739InUx3N-hsXbxQgTLsyTNMzg8sUd8Q_nUHFb8
 
 {
     "amount": 500,
