@@ -1,6 +1,7 @@
 const movementsRouter = require('express').Router()
 const User = require('../models/User')
 const Movement = require('../models/Movement')
+const userExtractor = require('../middlewares/userExtractor')
 
 movementsRouter.get('/', async (req, res) => {
   const movements = await Movement.find({}).populate('user', {
@@ -11,10 +12,10 @@ movementsRouter.get('/', async (req, res) => {
   res.json(movements)
 })
 
-movementsRouter.post('/', async (req, res) => {
-  const { amount, description, userId } = req.body
+movementsRouter.post('/', userExtractor, async (req, res) => {
+  const { amount, description } = req.body
 
-  console.log(userId)
+  const { userId } = req
 
   const user = await User.findById(userId)
 
