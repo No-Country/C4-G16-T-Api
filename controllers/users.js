@@ -1,4 +1,5 @@
 const usersRouter = require('express').Router()
+const userExtractor = require('../middlewares/userExtractor')
 const User = require('../models/User')
 
 usersRouter.get('/', async (req, res) => {
@@ -24,6 +25,22 @@ usersRouter.get('/:id', async (req, res, next) => {
     } else {
       res.status(404).end()
     }
+  } catch (error) {
+    next(error)
+  }
+})
+
+usersRouter.put('/:id', userExtractor, async (req, res, next) => {
+  const { id } = req.params
+  const { email } = req.body
+
+  const newUserData = {
+    email: email
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(id, newUserData, { new: true })
+    res.status(201).json(user)
   } catch (error) {
     next(error)
   }

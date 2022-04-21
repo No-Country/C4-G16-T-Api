@@ -1,0 +1,7 @@
+PUT http://localhost:4001/users/6261b463411e5fe2eacd0c35
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBlcGl0b0BnbWFpbC5jb20iLCJpZCI6IjYyNjFhODMzNDExZTVmZTJlYWNjZWMwMCIsImlhdCI6MTY1MDU4MjM4MiwiZXhwIjoxNjUxMTg3MTgyfQ.rajZCHtOz1X-F365Oykao4R-3QsQVs5fLYI-FDPJhyo
+
+{
+    "email": "pepitoeditado@gmail.com"
+}
